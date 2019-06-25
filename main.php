@@ -37,7 +37,28 @@ else
     <script src="detector.js"></script>
 
     <script>
+
         $(document).ready(function() {
+
+            var file = document.getElementById("fileimage");
+            file.onchange = function(){
+                if(file.files.length > 0)
+                {
+
+                    document.getElementById('file-name').innerHTML = 					file.files[0].name;
+
+                }
+            };
+
+            var file2 = document.getElementById("fileicon");
+            file2.onchange = function(){
+                if(file2.files.length > 0)
+                {
+
+                    document.getElementById('file-name2').innerHTML = 					file2.files[0].name;
+
+                }
+            };
 
             var form_data = {
                 token:'<?php echo $token; ?>',
@@ -46,7 +67,8 @@ else
 
             $.ajax({
                 type: "POST",
-                url: 'http://localhost/new-notifications/getEP.php',
+                //url: 'https://blackops.f5ads.com/Notifications2019/getEP.php',
+                url: 'getEP.php',
                 data: form_data,
                 success: function (result) {
                     var $dropdown = $("#endpoint");
@@ -59,6 +81,11 @@ else
         });
     </script>
 
+    <style>
+        #url, #title {
+            width:50%;
+        }
+    </style>
 </head>
 <body>
 <?php
@@ -80,12 +107,47 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
             </div>
         </div>
 
+       <div class="field">
+            <label class="label">URL</label>
+            <div class="control">
+                <input id="url" type="text"/>
+            </div>
+        </div>
         <div class="field">
             <label class="label">Title</label>
             <div class="control">
                 <input id="title" type="text"/>
             </div>
         </div>
+        <div class="file has-name is-boxed">
+            <label class="file-label">
+                <input multiple="multiple"  id="fileimage" class="file-input" type="file" name="file[]">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Choose an image...
+                  </span>
+                </span>
+                <span class="file-name" id="file-name"></span>
+            </label>
+        <!--</div>
+        <div class="file has-name is-boxed">-->
+            <label class="file-label">
+                <input multiple="multiple"  id="fileicon" class="file-input" type="file" name="file[]">
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Choose an icon...
+                  </span>
+                </span>
+                <span class="file-name" id="file-name2"></span>
+            </label>
+        </div>
+
         <div class="field">
             <label class="label">Message</label>
             <div class="control">

@@ -14,7 +14,7 @@ class SendNotification
         $this->$authToken = $authToken;*/
     }
 
-    public static function sendNotification($endpoint, $publicKey, $authToken, $message) {
+    public static function sendNotification($endpoint, $publicKey, $authToken, $message, $title, $icon, $image, $url) {
         $info = [
             'subscription' => Subscription::create([
                 'endpoint' => $endpoint,
@@ -34,12 +34,27 @@ class SendNotification
         );
 
         $webPush = new WebPush($auth);
-        foreach ($res as $kk) {
+
+        $notifContent = array(
+            'body' => $message,
+            'icon' =>  'uploads/icon.jpg',
+            'image' =>  'uploads/image.jpg',
+            'url' => $url,
+            'title' => $title
+        );
+
+
+
+        $res = $webPush->sendNotification(
+            $info['subscription'],
+            json_encode($notifContent)
+        );
+        /*foreach ($res as $kk) {
             $ell = $webPush->sendNotification(
                 $kk['subscription'],
                 $kk['payload']
             );
-        }
+        }*/
 
 
         // handle eventual errors here, and remove the subscription from your server if it is expired
@@ -48,12 +63,12 @@ class SendNotification
 
             if ($report->isSuccess()) {
                 //$this->response->body(json_encode("Message sent successfully for subscription {$endpoint}", JSON_UNESCAPED_SLASHES));
-                echo "on ho";
+                //echo "on ho";
                 //return $this->response;
 
             } else {
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
-                echo "on ho";
+                //echo "on ho";
                 //return $this->response;
 
             }

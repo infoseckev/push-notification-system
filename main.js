@@ -1,7 +1,7 @@
 const applicationServerPublicKey = 'BOebiYnIpJlnmDtYzp2_iHPtnGDVUrlRzUdNTX4rYQP9MXENXHpVw1QqDCHJwfA91WUYY5sqvVqn6hm_CewkhZ4';
 
 function subscribeUserToPush() {
-    return navigator.serviceWorker.register('worker/worker.js')
+    return navigator.serviceWorker.register('worker/serviceWorker.js')
         .then(function(registration) {
             const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
             var subscribeOptions = {

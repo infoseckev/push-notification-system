@@ -252,14 +252,28 @@ document.addEventListener('DOMContentLoaded', () => {
             //var csrfToken =  "xx"; //<?= json_encode($this->request->getParam('_csrfToken')) ?>;
             var endpointid =  $('#endpoint').children("option:selected").val() ;
             var msgtxt = $('#message').val();
-            var titletxt = $('#title').val();
+            var url = $('#url').val();
+            var title = $('#title').val();
+            var imageName = $('#fileimage').val();
+            var iconName = $('#fileicon').val();
             var info =
-                {"msg": msgtxt, "title" : titletxt, "endpointid" : endpointid};
+                {"msg": msgtxt,  "endpointid" : endpointid, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
 
+            var file_data = $('#fileimage').prop('files')[0];
+            var file_data2 = $('#fileicon').prop('files')[0];
+
+            var form_data = new FormData();
+            form_data.append('image', file_data);
+            form_data.append('icon', file_data2);
+            form_data.append('json', JSON.stringify(info));
+            console.log(form_data);
             $.ajax({
               type:"POST",
-              data: {json: JSON.stringify(info)},
-              url:"send_push_notification.php?",
+              cache: false,
+              contentType: false,
+              processData: false,
+              data: form_data, //{json: JSON.stringify(info)},
+              url:"notifications_controller.php",
               //beforeSend: function (xhr) { // Add this line
                // xhr.setRequestHeader('X-CSRF-Token',csrfToken);
               //},  // Add this line
@@ -272,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             });
 
-            /*fetch('send_push_notification.php', {
+            /*fetch('notifications_controller.php', {
               method: 'POST',
               body: JSON.stringify(Object.assign(jsonSubscription, { contentEncoding })),
             });*/

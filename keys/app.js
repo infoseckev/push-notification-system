@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
          const contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
          const jsonSubscription = subscription.toJSON();
-         fetch('send_push_notification.php', {
+         fetch('notifications_controller.php', {
            method: 'POST',
            body: JSON.stringify(Object.assign(jsonSubscription, { contentEncoding })),
          });
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
             $.ajax({
               type:"POST",
               data: {json: JSON.stringify(info)},
-              url:"send_push_notification.php",
+              url:"notifications_controller.php",
               beforeSend: function (xhr) { // Add this line
                 xhr.setRequestHeader('X-CSRF-Token',csrfToken);
               },  // Add this line
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             });
 
-            /*fetch('send_push_notification.php', {
+            /*fetch('notifications_controller.php', {
               method: 'POST',
               body: JSON.stringify(Object.assign(jsonSubscription, { contentEncoding })),
             });*/
