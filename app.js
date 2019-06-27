@@ -250,23 +250,33 @@ document.addEventListener('DOMContentLoaded', () => {
             //var fds =  JSON.stringify(Object.assign(jsonSubscription, { contentEncoding }));
             //debugger;
             //var csrfToken =  "xx"; //<?= json_encode($this->request->getParam('_csrfToken')) ?>;
-            var endpointid =  $('#endpoint').children("option:selected").val() ;
+            var endpoints = [];
+
+            $.each($("#sites option:selected"), function(){
+
+              endpoints.push($(this).val());
+
+            });
+            //var endpointid =  $('#sites').children("option:selected").val() ;
             var msgtxt = $('#message').val();
             var url = $('#url').val();
             var title = $('#title').val();
             var imageName = $('#fileimage').val();
             var iconName = $('#fileicon').val();
+
             var info =
-                {"msg": msgtxt,  "endpointid" : endpointid, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
+                {"msg": msgtxt,  "endpointid" : endpoints, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
 
             var file_data = $('#fileimage').prop('files')[0];
             var file_data2 = $('#fileicon').prop('files')[0];
 
             var form_data = new FormData();
+            let jsonres = JSON.stringify(info);
+
             form_data.append('image', file_data);
             form_data.append('icon', file_data2);
-            form_data.append('json', JSON.stringify(info));
-            console.log(form_data);
+            form_data.append('json',jsonres );
+
             $.ajax({
               type:"POST",
               cache: false,

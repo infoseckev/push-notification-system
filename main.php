@@ -42,20 +42,18 @@ else
 
             var file = document.getElementById("fileimage");
             file.onchange = function(){
-                if(file.files.length > 0)
-                {
+                if(file.files.length > 0) {
 
-                    document.getElementById('file-name').innerHTML = 					file.files[0].name;
+                    document.getElementById('file-name').innerHTML = file.files[0].name;
 
                 }
             };
 
             var file2 = document.getElementById("fileicon");
             file2.onchange = function(){
-                if(file2.files.length > 0)
-                {
+                if(file2.files.length > 0)  {
 
-                    document.getElementById('file-name2').innerHTML = 					file2.files[0].name;
+                    document.getElementById('file-name2').innerHTML = file2.files[0].name;
 
                 }
             };
@@ -67,14 +65,34 @@ else
 
             $.ajax({
                 type: "POST",
-                //url: 'https://blackops.f5ads.com/Notifications2019/getEP.php',
                 url: 'getEP.php',
                 data: form_data,
                 success: function (result) {
-                    var $dropdown = $("#endpoint");
+                    var $dropdown = $("#sites");
                     $.each(result, function () {
                         $dropdown.append($("<option />").val(this.id).text(this.endpoint));
                     });
+
+                   /* let uniqueURL = [];
+
+                    $.each(result, function(res) {
+                        if(res.visitingsite not in uniqueURL){
+                            //add visiting site to URL
+                        }
+                    });*/
+
+                    /////////TODO:get unique code. put in class///////////////////////
+                    /*var outputArray = [];
+
+                    for (var i = 0; i < result.length; i++)
+                    {
+                        if ((jQuery.inArray(inputArray[i], outputArray)) == -1)
+                        {
+                            outputArray.push(inputArray[i]);
+                        }
+                    }*/
+                    ///////////////////////////////////////////////////////////
+
                 }
             });
 
@@ -96,7 +114,15 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
         <h1 class="title">
             Send notifications
         </h1>
-        <div class="field">
+
+        <div class="select is-multiple">
+            <select multiple size="8" id="sites">
+               <!-- <option value="Argentina">Argentina</option>-->
+
+            </select>
+        </div>
+
+        <!--<div class="field">
             <label class="label">Endpoint</label>
             <div class="control">
                 <div class="select">
@@ -105,7 +131,7 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
                 </select>
                 </div>
             </div>
-        </div>
+        </div>-->
 
        <div class="field">
             <label class="label">URL</label>

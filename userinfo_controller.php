@@ -18,22 +18,30 @@ $dbname = 'moon';
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-       /* $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+        /* $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
-        $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
+         $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
 
-        $db->close();
+         $db->close();
 
-        header('Content-type: application/json');
-        echo json_encode($endpoints);*/
+         header('Content-type: application/json');
+         echo json_encode($endpoints);*/
         break;
     case 'POST':
+
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+
+         $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
+
+         $db->close();
+
+         header('Content-type: application/json');
+         echo json_encode($endpoints);
 
         //$total = count($_FILES['file']['tmp_name']);
         //echo $total;
         ///////TODO:make this in Class////////////////
-        /*$target_dir = "uploads/";
+        $target_dir = "uploads/";
         $target_file = $target_dir . basename("image.jpg"); // . basename($_FILES["file"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
         // Check if image file is a actual image or fake image
@@ -63,7 +71,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             //echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
         } else {
             //echo "Sorry, there was an error uploading your file.";
-        }*/
+        }
         /////////////END///////////////////////////////
         $json = json_decode($_POST['json']);
         $msg = $json->msg;
@@ -72,16 +80,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $image = $json->image;
         $icon = $json->icon;
 
+        //echo $icon;
+
         $url = $json->url;
 
-        $endpoints = $json->endpointid;
+        $endpointId = $json->endpointid;
+        $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
-        foreach($endpoints as $endpointId){
-            $endpoint = $db->query('SELECT endpoint, publicKey, authToken FROM user_info WHERE id = ?', $endpointId)->fetchArray();
-            $response = SendNotification::sendNotification($endpoint['endpoint'], $endpoint['publicKey'], $endpoint['authToken'], $msg, $title, $icon, $image, $url);
-        }
-
-
+        $endpoint = $db->query('SELECT endpoint, publicKey, authToken FROM user_info WHERE id = ?', $endpointId)->fetchArray();
+        $response = SendNotification::sendNotification($endpoint['endpoint'], $endpoint['publicKey'], $endpoint['authToken'], $msg, $title, $icon, $image, $url);
         break;
     case 'PUT':
 

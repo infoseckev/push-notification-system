@@ -14,10 +14,6 @@ $dbname = 'moon';
 
 
 if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-    //Request identified as ajax request
-
-
-        //HTTP_REFERER verification
         if($_POST['token'] == $_SESSION['token']) {
             $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
