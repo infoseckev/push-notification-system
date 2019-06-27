@@ -17,7 +17,7 @@ if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
         if($_POST['token'] == $_SESSION['token']) {
             $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
-            $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
+            $endpoints = $db->query('SELECT distinct domainId FROM user_info_domainId')->fetchAll();
 
             $db->close();
 

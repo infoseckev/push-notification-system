@@ -19,52 +19,14 @@ $dbname = 'moon';
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
        /* $db = new db($dbhost, $dbuser, $dbpass, $dbname);
-
         $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
-
         $db->close();
-
         header('Content-type: application/json');
         echo json_encode($endpoints);*/
         break;
     case 'POST':
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
-        //$total = count($_FILES['file']['tmp_name']);
-        //echo $total;
-        ///////TODO:make this in Class////////////////
-        /*$target_dir = "uploads/";
-        $target_file = $target_dir . basename("image.jpg"); // . basename($_FILES["file"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        //var_dump($_FILES);
-        $check = getimagesize($_FILES["image"]["tmp_name"]);
-        if ($check !== false) {
-            //echo "File is an image - " . $check["mime"] . ".";
-        } else {
-            //echo "File is not an image.";
-        }
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-            //echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
-        } else {
-            //echo "Sorry, there was an error uploading your file.";
-        }
-        $target_file = $target_dir . basename("icon.jpg"); // . basename($_FILES["file"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        //var_dump($_FILES);
-        $check = getimagesize($_FILES["icon"]["tmp_name"]);
-        if ($check !== false) {
-            //echo "File is an image - " . $check["mime"] . ".";
-        } else {
-            //echo "File is not an image.";
-        }
-        if (move_uploaded_file($_FILES["icon"]["tmp_name"], $target_file)) {
-            //echo "The file " . basename($_FILES["file"]["name"]) . " has been uploaded.";
-        } else {
-            //echo "Sorry, there was an error uploading your file.";
-        }*/
-        /////////////END///////////////////////////////
         $json = json_decode($_POST['json']);
         $msg = $json->msg;
         $title = $json->title;
@@ -74,11 +36,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $url = $json->url;
 
-        $endpoints = $json->endpointid;
+        $domainIds = $json->domainIds;
 
-        foreach($endpoints as $endpointId){
-            $endpoint = $db->query('SELECT endpoint, publicKey, authToken FROM user_info WHERE id = ?', $endpointId)->fetchArray();
-            $response = SendNotification::sendNotification($endpoint['endpoint'], $endpoint['publicKey'], $endpoint['authToken'], $msg, $title, $icon, $image, $url);
+        foreach($domainIds as $domainId){
+            $endpoints = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info_domainId.user_info_id, user_info_domainId.domainId
+                                            FROM user_info
+                                            INNER JOIN user_info_domainId
+                                            ON user_info.id = user_info_domainId.user_info_id 
+                                            WHERE user_info_domainId.domainId = ?', $domainId)->fetchArray();
+            foreach($endpoints as $ep){
+                $response = SendNotification::sendNotification($endpoint['$ep'], $ep['publicKey'], $ep['authToken'], $msg, $title, $icon, $image, $url);
+            }
+
         }
 
 

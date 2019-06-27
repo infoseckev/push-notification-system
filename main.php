@@ -4,6 +4,7 @@ $token = md5(rand(1000,9999));
 $_SESSION['token'] = $token;
 
 $ipaddress = '';
+
 if ($_SERVER['HTTP_CLIENT_IP'])
     $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
 else if($_SERVER['HTTP_X_FORWARDED_FOR'])
@@ -20,8 +21,6 @@ else
     $ipaddress = 'UNKNOWN';
 ?>
 
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,9 +34,7 @@ else
     <script src="app.js"></script>
     <script src="lib/push.js"></script>
     <script src="detector.js"></script>
-
     <script>
-
         $(document).ready(function() {
 
             var file = document.getElementById("fileimage");
@@ -68,31 +65,10 @@ else
                 url: 'getEP.php',
                 data: form_data,
                 success: function (result) {
-                    var $dropdown = $("#sites");
+                    var $dropdown = $("#domainId");
                     $.each(result, function () {
-                        $dropdown.append($("<option />").val(this.id).text(this.endpoint));
+                        $dropdown.append($("<option />").val(this.domainId).text(this.domainId));
                     });
-
-                   /* let uniqueURL = [];
-
-                    $.each(result, function(res) {
-                        if(res.visitingsite not in uniqueURL){
-                            //add visiting site to URL
-                        }
-                    });*/
-
-                    /////////TODO:get unique code. put in class///////////////////////
-                    /*var outputArray = [];
-
-                    for (var i = 0; i < result.length; i++)
-                    {
-                        if ((jQuery.inArray(inputArray[i], outputArray)) == -1)
-                        {
-                            outputArray.push(inputArray[i]);
-                        }
-                    }*/
-                    ///////////////////////////////////////////////////////////
-
                 }
             });
 
@@ -115,23 +91,12 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
             Send notifications
         </h1>
 
-        <div class="select is-multiple">
-            <select multiple size="8" id="sites">
+        <div class="select is-multiple">Domain Id
+            <select multiple size="4" id="domainId">
                <!-- <option value="Argentina">Argentina</option>-->
 
             </select>
         </div>
-
-        <!--<div class="field">
-            <label class="label">Endpoint</label>
-            <div class="control">
-                <div class="select">
-                <select id="endpoint">
-                    <option value="">----Select----</option>
-                </select>
-                </div>
-            </div>
-        </div>-->
 
        <div class="field">
             <label class="label">URL</label>

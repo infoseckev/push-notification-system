@@ -250,11 +250,11 @@ document.addEventListener('DOMContentLoaded', () => {
             //var fds =  JSON.stringify(Object.assign(jsonSubscription, { contentEncoding }));
             //debugger;
             //var csrfToken =  "xx"; //<?= json_encode($this->request->getParam('_csrfToken')) ?>;
-            var endpoints = [];
+            var domainIds = [];
 
-            $.each($("#sites option:selected"), function(){
+            $.each($("#domainId option:selected"), function(){
 
-              endpoints.push($(this).val());
+              domainIds.push($(this).val());
 
             });
             //var endpointid =  $('#sites').children("option:selected").val() ;
@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             var iconName = $('#fileicon').val();
 
             var info =
-                {"msg": msgtxt,  "endpointid" : endpoints, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
+                {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
 
             var file_data = $('#fileimage').prop('files')[0];
             var file_data2 = $('#fileicon').prop('files')[0];
