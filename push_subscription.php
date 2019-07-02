@@ -18,7 +18,7 @@ switch ($method) {
         $servername = "localhost";
         $username = "root";
         $password = 'password';
-        //$password = 'Kj$gX%2f2019_2020';
+        $password = 'Kj$gX%2f2019_2020';
         $dbname = "moon";
 
         $conn = new mysqli($servername, $username, $password, $dbname);

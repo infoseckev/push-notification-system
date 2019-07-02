@@ -18,6 +18,14 @@ class SendNotification
     }
 
     public static function sendNotification($endpoint, $publicKey, $authToken, $message, $title, $icon, $image, $url) {
+        $dbhost = "localhost";
+        $dbuser = "root";
+        $dbpass = "password";
+        $dbpass = 'Kj$gX%2f2019_2020';
+        $dbname = "moon";
+
+        $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+
         $info = [
             'subscription' => Subscription::create([
                 'endpoint' => $endpoint,
@@ -43,9 +51,10 @@ class SendNotification
 
         $notifContent = array(
             'body' => $message,
-            'icon' =>  'uploads/icon.jpg',
-            'image' =>  'uploads/image.jpg',
+            'icon' =>  $icon,
+            'image' =>  $image,
             'url' => $url,
+            'data' => $endpoint,
             'title' => $title
         );
 
@@ -57,18 +66,11 @@ class SendNotification
 
         // handle eventual errors here, and remove the subscription from your server if it is expired
         foreach ($webPush->flush() as $report) {
-            $endpointz = $report->getRequest()->getUri()->__toString();
+            //$endpointz = $report->getRequest()->getUri()->__toString();
 
             if ($report->isSuccess()) {
 
-                $dbhost = "localhost";
-                $dbuser = "root";
-                $dbpass = "password";
-                $dbname = "moon";
-                
-                $db = new db($dbhost, $dbuser, $dbpass, $dbname);
-
-                $res = $db->query('INSERT INTO sent_logs (endpointId) values (?) ', $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (endpointId, is_received) values (?, 1) ', $endpoint);
 
                 $db->close();
 
@@ -77,6 +79,8 @@ class SendNotification
                 //return $this->response;
 
             } else {
+                $res = $db->query('INSERT INTO sent_logs (endpointId, is_received) values (?, 0) ', $endpoint);
+
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
                 echo "oh NO :(";
                 //return $this->response;

@@ -26,17 +26,18 @@ self.addEventListener('push', function (event) {
         return;
     }
 
-    var sendNotification = function(message, icon, image, url, title) {
+    var sendNotification = function(message, icon, image, url, data, title) {
         // on actualise la page des notifications ou/et le compteur de notifications
         //self.refreshNotifications();
 
         const notificationOptions = {
             body: message,
-            icon: 'uploads/icon.jpg',
+            icon: 'https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
             data: {
-                click_url: url
+                click_url: url,
+                ep : data
             },
-            image: 'uploads/image.jpg'
+            image: 'https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
         };
 
         /*var title = title || "No Title!",
@@ -57,7 +58,7 @@ self.addEventListener('push', function (event) {
 
         var data = event.data.json();
         event.waitUntil(
-            sendNotification(data.body, data.icon, data.image, data.url, data.title)
+            sendNotification(data.body, data.icon, data.image, data.url, data.data, data.title)
         );
     } /*else {
         event.waitUntil(
@@ -112,32 +113,29 @@ self.addEventListener('notificationclick', function (event) {
     event.notification.close();
     console.log(event);
     event.waitUntil(clients.openWindow(event.notification.data.click_url));
-debugger;
-    event.waitUntil(
-        clients.matchAll({
-            type: "window"
+
+
+    var info =
+        {"ep": event.notification.data.ep};
+
+    var form_data = new FormData();
+    let jsonres = JSON.stringify(info);
+
+    form_data.append('json',jsonres );
+
+
+    fetch("userinfo_controller.php", {
+        method: 'post',
+        body: form_data
+    })
+        .then(json)
+        .then(function (data) {
+            console.log('Request succeeded with JSON response', data);
         })
-            .then(function (clientList) {
-                debugger;
-                /*// si la page des notifications est ouverte on l'affiche en priorité
-                for (var i = 0; i < clientList.length; i++) {
-                    var client = clientList[i];
-                    if (client.url.search(/notifications/i) >= 0 && 'focus' in client) {
-                        return client.focus();
-                    }
-                }
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
 
-                // sinon s'il y a quand même une page du site ouverte on l'affiche
-                if (clientList.length && 'focus' in client) {
-                    return client.focus();
-                }
-
-                // sinon on ouvre la page des notifications
-                if (clients.openWindow) {
-                    return clients.openWindow('notifications');
-                }*/
-            })
-    );
 });
 /*
 self.addEventListener('message', function (event) {
