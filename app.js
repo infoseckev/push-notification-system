@@ -1,3 +1,4 @@
+////add to notification
 document.addEventListener('DOMContentLoaded', () => {
   const applicationServerKey =
     'BN1szjBQjrtB0R0l-PtmreFmomlHvVP0ZAvB1lPS0ePlyZQnizJUci5yiWQKJUFDbBztqXCsyYkeP0qrXpKiFns';
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  ////add to notification validators
   if (!('serviceWorker' in navigator)) {
     console.warn('Service workers are not supported by this browser');
     changePushButtonState('incompatible');
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       changePushButtonState('incompatible');
     }
   );
-
+  ////////////////////////////
   function changePushButtonState(state) {
     switch (state) {
       case 'enabled':

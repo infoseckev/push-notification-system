@@ -39,13 +39,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $domainIds = $json->domainIds;
 
         foreach($domainIds as $domainId){
-            $endpoints = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info_domainId.user_info_id, user_info_domainId.domainId
+            $endpointarr = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info_domainId.user_info_id, user_info_domainId.domainId
                                             FROM user_info
                                             INNER JOIN user_info_domainId
                                             ON user_info.id = user_info_domainId.user_info_id 
-                                            WHERE user_info_domainId.domainId = ?', $domainId)->fetchArray();
-            foreach($endpoints as $ep){
-                $response = SendNotification::sendNotification($endpoint['$ep'], $ep['publicKey'], $ep['authToken'], $msg, $title, $icon, $image, $url);
+                                            WHERE user_info_domainId.domainId = ?', $domainId)->fetchAll();
+
+            foreach($endpointarr as $eps){
+
+                $response = SendNotification::sendNotification($eps['endpoint'], $eps['publicKey'], $eps['authToken'], $msg, $title, $icon, $image, $url);
             }
 
         }

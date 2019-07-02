@@ -2,11 +2,14 @@
 require __DIR__ . '/vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
+
+
 class SendNotification
 {
     private $endpoint;
     private $publicKey;
     private $authToken;
+
 
     function __construct(  ) {
         /*$this->$endpoint = $endpoint;
@@ -23,8 +26,11 @@ class SendNotification
             ]),
             'payload' => $message,
         ];
+
         $res = [];
+
         array_push($res, $info);
+
         $auth = array(
             'VAPID' => array(
                 'subject' => 'Nooooo',
@@ -44,35 +50,38 @@ class SendNotification
         );
 
 
-
         $res = $webPush->sendNotification(
             $info['subscription'],
             json_encode($notifContent)
         );
-        /*foreach ($res as $kk) {
-            $ell = $webPush->sendNotification(
-                $kk['subscription'],
-                $kk['payload']
-            );
-        }*/
-
 
         // handle eventual errors here, and remove the subscription from your server if it is expired
         foreach ($webPush->flush() as $report) {
-            $endpoint = $report->getRequest()->getUri()->__toString();
+            $endpointz = $report->getRequest()->getUri()->__toString();
 
             if ($report->isSuccess()) {
+
+                $dbhost = "localhost";
+                $dbuser = "root";
+                $dbpass = "password";
+                $dbname = "moon";
+                
+                $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+
+                $res = $db->query('INSERT INTO sent_logs (endpointId) values (?) ', $endpoint);
+
+                $db->close();
+
                 //$this->response->body(json_encode("Message sent successfully for subscription {$endpoint}", JSON_UNESCAPED_SLASHES));
-                //echo "on ho";
+                echo "Success Sent";
                 //return $this->response;
 
             } else {
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
-                //echo "on ho";
+                echo "oh NO :(";
                 //return $this->response;
 
             }
         }
-
     }
 }

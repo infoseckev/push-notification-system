@@ -112,13 +112,14 @@ self.addEventListener('notificationclick', function (event) {
     event.notification.close();
     console.log(event);
     event.waitUntil(clients.openWindow(event.notification.data.click_url));
-
-    /*event.waitUntil(
+debugger;
+    event.waitUntil(
         clients.matchAll({
             type: "window"
         })
             .then(function (clientList) {
-                // si la page des notifications est ouverte on l'affiche en priorité
+                debugger;
+                /*// si la page des notifications est ouverte on l'affiche en priorité
                 for (var i = 0; i < clientList.length; i++) {
                     var client = clientList[i];
                     if (client.url.search(/notifications/i) >= 0 && 'focus' in client) {
@@ -134,9 +135,9 @@ self.addEventListener('notificationclick', function (event) {
                 // sinon on ouvre la page des notifications
                 if (clients.openWindow) {
                     return clients.openWindow('notifications');
-                }
+                }*/
             })
-    );*/
+    );
 });
 /*
 self.addEventListener('message', function (event) {
