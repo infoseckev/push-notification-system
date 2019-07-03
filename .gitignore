@@ -11,7 +11,9 @@ Thumbs.db
 Desktop.ini
 
 # ignore Composer downloads
-/vendor/*
+/app/vendor/*
+/app/keys/*
+/app/uploads/*
 
 # keep some hiddens
 !.htaccess
