@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 $subscription = json_decode(file_get_contents('php://input'), true);
 $browser = $subscription['browser'];
 if (!isset($subscription['endpoint'])) {
-    echo 'Error: not a subscription';
+    //echo 'Error: not a subscription';
     return;
 }
 

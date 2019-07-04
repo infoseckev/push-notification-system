@@ -96,8 +96,8 @@ else
              var msgtxt = $('#message').val();
              var url = $('#url').val();
              var title = $('#title').val();
-             var imageName = '';// $('#fileimage').val();
-             var iconName = '';//$('#fileicon').val();
+             var imageName = $('#image').val();// $('#fileimage').val();
+             var iconName = $('#icon').val();//$('#fileicon').val();
 
              var info =
                  {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
@@ -181,6 +181,18 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
             </div>
         </div>
 
+        <div class="field">
+            <label class="label">Icon URL</label>
+            <div class="control">
+                <input id="icon" type="text" value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Image URL</label>
+            <div class="control">
+                <input id="image" type="text" value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
+            </div>
+        </div>
         <div class="field">
             <label class="label">Message</label>
             <div class="control">

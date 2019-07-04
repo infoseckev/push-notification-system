@@ -32,12 +32,12 @@ self.addEventListener('push', function (event) {
 
         const notificationOptions = {
             body: message,
-            icon: 'https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
+            icon: icon,
             data: {
                 click_url: url,
                 ep : data
             },
-            image: 'https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'
+            image: image
         };
 
         /*var title = title || "No Title!",
