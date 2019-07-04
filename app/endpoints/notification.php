@@ -1,14 +1,12 @@
 <?php
+require __DIR__ . '/../vendor/autoload.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require '../vendor/autoload.php';
-
-
-include  __DIR__ .'/../classes/db.php';
-include  __DIR__ . '/../classes/SendNotification.php';
+include '../classes/db.php';
+include '../classes/SendNotification.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'password';
@@ -21,10 +19,10 @@ $dbname = 'moon';
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
        /* $db = new db($dbhost, $dbuser, $dbpass, $dbname);
-        $controller = $db->query('SELECT * FROM user_info')->fetchAll();
+        $endpoints = $db->query('SELECT * FROM user_info')->fetchAll();
         $db->close();
         header('Content-type: application/json');
-        echo json_encode($controller);*/
+        echo json_encode($endpoints);*/
         break;
     case 'POST':
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);

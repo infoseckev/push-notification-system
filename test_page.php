@@ -1,21 +1,18 @@
 <?php
-session_start();
-$token = md5(rand(1000,9999));
-$_SESSION['token'] = $token;
 
 $ipaddress = '';
 
 if ($_SERVER['HTTP_CLIENT_IP'])
     $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+else if ($_SERVER['HTTP_X_FORWARDED_FOR'])
     $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-else if($_SERVER['HTTP_X_FORWARDED'])
+else if ($_SERVER['HTTP_X_FORWARDED'])
     $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-else if($_SERVER['HTTP_FORWARDED_FOR'])
+else if ($_SERVER['HTTP_FORWARDED_FOR'])
     $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-else if($_SERVER['HTTP_FORWARDED'])
+else if ($_SERVER['HTTP_FORWARDED'])
     $ipaddress = $_SERVER['HTTP_FORWARDED'];
-else if($_SERVER['REMOTE_ADDR'])
+else if ($_SERVER['REMOTE_ADDR'])
     $ipaddress = $_SERVER['REMOTE_ADDR'];
 else
     $ipaddress = 'UNKNOWN';
@@ -30,33 +27,115 @@ else
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="app/app.js"></script>
-    <script src="app/lib/push.js"></script>
-    <script src="app/detector.js"></script>
+    <script src="app/lib/subscriptionHandler.js"></script>
+    <script src="app/lib/pushSendManager.js"></script>
+    <script src="app/lib/detector.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            var file = document.getElementById("fileimage");
-            file.onchange = function(){
-                if(file.files.length > 0) {
+            let isPushEnabled = false;
 
-                    document.getElementById('file-name').innerHTML = file.files[0].name;
+            const pushButton = document.querySelector('#push-subscription-button');
 
+            pushButton.addEventListener('click', function () {
+
+                if (isPushEnabled) {
+                    subscriptionHandler.push_unsubscribe();
+                } else {
+                    subscriptionHandler.init();
+                    changePushButtonState('enabled');
                 }
-            };
+            });
 
-            var file2 = document.getElementById("fileicon");
-            file2.onchange = function(){
-                if(file2.files.length > 0)  {
-
-                    document.getElementById('file-name2').innerHTML = file2.files[0].name;
-
+            function changePushButtonState(state) {
+                switch (state) {
+                    case 'enabled':
+                        pushButton.disabled = false;
+                        pushButton.textContent = 'Disable Push notifications';
+                        isPushEnabled = true;
+                        break;
+                    case 'disabled':
+                        pushButton.disabled = false;
+                        pushButton.textContent = 'Enable Push notifications';
+                        isPushEnabled = false;
+                        break;
+                    case 'computing':
+                        pushButton.disabled = true;
+                        pushButton.textContent = 'Loading...';
+                        break;
+                    case 'incompatible':
+                        pushButton.disabled = true;
+                        pushButton.textContent = 'Push notifications are not compatible with this browser';
+                        break;
+                    default:
+                        console.error('Unhandled push button state', state);
+                        break;
                 }
-            };
+            }
 
+
+  const sendPushButton = document.querySelector('#send-push-button');
+
+   sendPushButton.addEventListener('click', () =>
+       navigator.serviceWorker.ready
+           .then(serviceWorkerRegistration => serviceWorkerRegistration.pushManager.getSubscription())
+           .then(subscription => {
+             if (!subscription) {
+               alert('Please enable push notifications');
+               return;
+             }
+
+             var domainIds = [];
+
+             $.each($("#domainId option:selected"), function(){
+
+               domainIds.push($(this).val());
+
+             });
+             //var endpointid =  $('#sites').children("option:selected").val() ;
+             var msgtxt = $('#message').val();
+             var url = $('#url').val();
+             var title = $('#title').val();
+             var imageName = '';// $('#fileimage').val();
+             var iconName = '';//$('#fileicon').val();
+
+             var info =
+                 {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
+
+             //var file_data = $('#fileimage').prop('files')[0];
+             //var file_data2 = $('#fileicon').prop('files')[0];
+
+             var form_data = new FormData();
+             let jsonres = JSON.stringify(info);
+
+             //form_data.append('image', file_data);
+             //form_data.append('icon', file_data2);
+             form_data.append('json',jsonres );
+
+             $.ajax({
+               type:"POST",
+               cache: false,
+               contentType: false,
+               processData: false,
+               data: form_data, //{json: JSON.stringify(info)},
+               url:"app/endpoints/notification.php",
+               //beforeSend: function (xhr) { // Add this line
+                // xhr.setRequestHeader('X-CSRF-Token',csrfToken);
+               //},  // Add this line
+               success : function(data) {
+                 console.log(data);// will alert "ok"
+
+               },
+               error : function() {
+                 //alert("false");
+               }
+             });
+
+           })
+   );
             $.ajax({
                 type: "GET",
-                url: 'app/controller/userinfo.php',
+                url: 'app/endpoints/tracking.php',
                 success: function (result) {
                     var $dropdown = $("#domainId");
                     $.each(result, function () {
@@ -70,7 +149,7 @@ else
 
     <style>
         #url, #title {
-            width:50%;
+            width: 50%;
         }
     </style>
 </head>
@@ -86,12 +165,10 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
 
         <div class="select is-multiple">Domain Id
             <select multiple size="4" id="domainId">
-               <!-- <option value="Argentina">Argentina</option>-->
-
             </select>
         </div>
 
-       <div class="field">
+        <div class="field">
             <label class="label">URL</label>
             <div class="control">
                 <input id="url" type="text"/>
@@ -102,34 +179,6 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
             <div class="control">
                 <input id="title" type="text"/>
             </div>
-        </div>
-        <div class="file has-name is-boxed">
-            <label class="file-label">
-                <input multiple="multiple"  id="fileimage" class="file-input" type="file" name="file[]">
-                <span class="file-cta">
-                  <span class="file-icon">
-                    <i class="fas fa-upload"></i>
-                  </span>
-                  <span class="file-label">
-                    Choose an image...
-                  </span>
-                </span>
-                <span class="file-name" id="file-name"></span>
-            </label>
-        <!--</div>
-        <div class="file has-name is-boxed">-->
-            <label class="file-label">
-                <input multiple="multiple"  id="fileicon" class="file-input" type="file" name="file[]">
-                <span class="file-cta">
-                  <span class="file-icon">
-                    <i class="fas fa-upload"></i>
-                  </span>
-                  <span class="file-label">
-                    Choose an icon...
-                  </span>
-                </span>
-                <span class="file-name" id="file-name2"></span>
-            </label>
         </div>
 
         <div class="field">
@@ -143,7 +192,7 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
                 <button id="send-push-button" class="button is-link">Send Notifications</button>
             </div>
             <div class="control">
-                <button  id="push-subscription-button" class="button is-text">Add me to push notifications</button>
+                <button id="push-subscription-button" class="button is-text">Add me to push notifications</button>
             </div>
         </div>
 

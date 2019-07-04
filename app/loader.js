@@ -1,8 +1,15 @@
 if( 1 === Math.floor(Math.random() * 10)){
-    $.getScript( "app/app.js" );
-    $.getScript( "app/detector.js" );
-    $.getScript( "app/lib/push.js" );
+    $.when(
+        $.getScript( "app/lib/detector.js" ),
+        $.getScript( "app/lib/subscriptionHandler.js", function() {
+
+        }),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+    ).done(function(){
+        subscriptionHandler.init();
+    });
 }else{
-    //$.getScript( "aaaaaaa.js" );
-    console.log("hi2u -_-");
+    console.log("90% chance");
 }

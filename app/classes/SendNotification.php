@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 
@@ -42,8 +42,8 @@ class SendNotification
         $auth = array(
             'VAPID' => array(
                 'subject' => 'Nooooo',
-                'publicKey' => file_get_contents( '../keys/public_key.txt'), // don't forget that your public key also lives in app.js
-                'privateKey' => file_get_contents( '../keys/prisvate_keyxx11a.php'), // in the real world, this would be in a secret file
+                'publicKey' => file_get_contents(__DIR__ . '/../keys/public_key.txt'), // don't forget that your public key also lives in app.js
+                'privateKey' => file_get_contents(__DIR__ . '/../keys/prisvate_keyxx11a.php'), // in the real world, this would be in a secret file
             ),
         );
 

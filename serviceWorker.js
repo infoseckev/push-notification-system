@@ -124,11 +124,10 @@ self.addEventListener('notificationclick', function (event) {
     form_data.append('json',jsonres );
 
 
-    fetch("app/controller/userinfo.php", {
+    fetch("app/endpoints/tracking.php", {
         method: 'post',
         body: form_data
     })
-        .then(json)
         .then(function (data) {
             console.log('Request succeeded with JSON response', data);
         })
