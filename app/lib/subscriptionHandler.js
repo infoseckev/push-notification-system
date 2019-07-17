@@ -34,7 +34,7 @@ var subscriptionHandler = (function () {
                 return;
             }
 
-            navigator.serviceWorker.register('serviceWorker.js').then(
+            navigator.serviceWorker.register('/serviceWorker.js').then(
                 () => {
                     console.log('[SW] Service worker has been registered');
                     this.push_updateSubscription();
@@ -66,7 +66,7 @@ var subscriptionHandler = (function () {
             const contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
 
             var e = myfctn.init();
-            var ipaddr = '0.0.0.0'; //$('#ip').val();
+            var ipaddr = ip;
 
             var browserInfo = {
                 'ip': ipaddr, 'site': window.location.toString(), 'osname': e.os.name, 'osversion': e.os.version,
@@ -75,7 +75,7 @@ var subscriptionHandler = (function () {
                 'platform': navigator.platform, 'vendor': navigator.vendor
             };
 
-            return fetch('app/endpoints/subscription.php', {
+            return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
                 method,
                 body: JSON.stringify({
                     endpoint: subscription.endpoint,

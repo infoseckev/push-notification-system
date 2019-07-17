@@ -21,7 +21,7 @@ class SendNotification
         $dbhost = "localhost";
         $dbuser = "root";
         $dbpass = "password";
-        //$dbpass = 'Kj$gX%2f2019_2020';
+        $dbpass = 'Kj$gX%2f2019_2020';
         $dbname = "moon";
 
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);

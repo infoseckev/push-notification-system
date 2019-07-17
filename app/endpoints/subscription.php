@@ -3,6 +3,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, PUT, GET, OPTIONS');
+//header('Content-type: application/json');
+
 $subscription = json_decode(file_get_contents('php://input'), true);
 $browser = $subscription['browser'];
 if (!isset($subscription['endpoint'])) {
@@ -15,10 +19,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'POST':
 
+
         $servername = "localhost";
         $username = "root";
         $password = 'password';
-        //$password = 'Kj$gX%2f2019_2020';
+        $password = 'Kj$gX%2f2019_2020';
         $dbname = "moon";
 
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -67,6 +72,51 @@ switch ($method) {
 
             $stmt->execute();
         }
+
+        $stmt = $conn->prepare("SELECT LAST_INSERT_ID();");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userId = 0;
+        while ($row = $result->fetch_assoc()) {
+            $userId = $row['LAST_INSERT_ID()'];
+            break;
+        }
+        //var_dump($userId);
+        /////////////////////////
+        ///
+        $stmt = $conn->prepare("INSERT INTO domains (`domain_name`) VALUES (?)
+  ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)");
+
+        $stmt->bind_param("s",$domain_name);
+
+        $domain_name = $browser['site'];
+        $res = $stmt->execute();
+
+
+        $stmt = $conn->prepare("SELECT LAST_INSERT_ID();");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $domainId = 0;
+        while ($row = $result->fetch_assoc()) {
+            //var_dump($row);
+            $domainId = $row['LAST_INSERT_ID()'];
+            break;
+        }
+echo $domainId . "    ";
+        echo $userId . "    ";
+        echo "browser : " . $browser['site'];
+        /////////////////////////////
+        ///
+       $stmt = $conn->prepare("INSERT INTO user_info_domainId (`user_info_id`, `domainId`, `domain_name`) VALUES (?, ?, ?)");
+
+        $stmt->bind_param("sss",$var1, $var2, $var3);
+        $var1 = $userId;
+        $var2 = $domainId;
+        $var3 = $domain_name;
+        $res = $stmt->execute();
+
 
         $stmt->close();
         $conn->close();
