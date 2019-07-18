@@ -10,7 +10,7 @@ include '../classes/SendNotification.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'password';
-//$dbpass = 'Kj$gX%2f2019_2020';
+$dbpass = 'Kj$gX%2f2019_2020';
 $dbname = 'moon';
 
 //$params = json_decode($_POST['json']);
@@ -25,18 +25,29 @@ switch ($_SERVER['REQUEST_METHOD']) {
         echo json_encode($endpoints);*/
         break;
     case 'POST':
+
+        header('Access-Control-Allow-Origin: *');
+
+        //header('Content-type: application/json');
+
+        $params =  json_decode(file_get_contents('php://input'), TRUE);
+
+        $json = $params['json'];
+
+        //return;
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+        //var_dump($_POST);
+        //$json = $params->json; //->json; //json_decode($_POST);
 
-        $json = json_decode($_POST['json']);
-        $msg = $json->msg;
-        $title = $json->title;
+        $msg = $json['msg'];
+        $title = $json['title'];
 
-        $image = $json->image;
-        $icon = $json->icon;
+        $image = $json['image'];
+        $icon = $json['icon'];
 
-        $url = $json->url;
+        $url = $json['url'];
 
-        $domainIds = $json->domainIds;
+        $domainIds = $json['domainIds'];
 
         foreach($domainIds as $domainId){
             $endpointarr = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info_domainId.user_info_id, user_info_domainId.domainId

@@ -9,7 +9,7 @@ include '../classes/db.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'password';
-//$dbpass = 'Kj$gX%2f2019_2020';
+$dbpass = 'Kj$gX%2f2019_2020';
 $dbname = 'moon';
 
 //$params = json_decode($_POST['json']);
@@ -19,9 +19,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
-        $endpoints = $db->query('SELECT distinct domainId FROM user_info_domainId')->fetchAll();
+        $endpoints = $db->query('SELECT distinct domainId, domain_name FROM user_info_domainId WHERE domain_name != NULL or domain_name != ""')->fetchAll();
 
         $db->close();
+
+        header('Access-Control-Allow-Origin: *');
 
         header('Content-type: application/json');
         echo json_encode($endpoints);

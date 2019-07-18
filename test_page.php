@@ -2,7 +2,8 @@
 
 $ipaddress = '';
 
-if ($_SERVER['HTTP_CLIENT_IP'])
+$clientIP = false;
+if (array_key_exists('HTTP_CLIENT_IP', $_SERVER))
     $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
 else if ($_SERVER['HTTP_X_FORWARDED_FOR'])
     $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -27,8 +28,8 @@ else
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="app/lib/subscriptionHandler.js"></script>
-    <script src="app/lib/pushSendManager.js"></script>
+    <script src="https://blackops.f5ads.com/Notifications2019/app/lib/subscriptionHandler.js"></script>
+    <script src="app/lib/push.js"></script>
     <script src="app/lib/detector.js"></script>
     <script>
         $(document).ready(function () {
@@ -82,7 +83,7 @@ else
            .then(subscription => {
              if (!subscription) {
                alert('Please enable push notifications');
-               return;
+               //return;
              }
 
              var domainIds = [];
@@ -92,42 +93,26 @@ else
                domainIds.push($(this).val());
 
              });
-             //var endpointid =  $('#sites').children("option:selected").val() ;
              var msgtxt = $('#message').val();
              var url = $('#url').val();
              var title = $('#title').val();
              var imageName = $('#image').val();// $('#fileimage').val();
              var iconName = $('#icon').val();//$('#fileicon').val();
 
-             var info =
+             var json =
                  {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
-
-             //var file_data = $('#fileimage').prop('files')[0];
-             //var file_data2 = $('#fileicon').prop('files')[0];
-
-             var form_data = new FormData();
-             let jsonres = JSON.stringify(info);
-
-             //form_data.append('image', file_data);
-             //form_data.append('icon', file_data2);
-             form_data.append('json',jsonres );
 
              $.ajax({
                type:"POST",
-               cache: false,
-               contentType: false,
-               processData: false,
-               data: form_data, //{json: JSON.stringify(info)},
-               url:"app/endpoints/notification.php",
-               //beforeSend: function (xhr) { // Add this line
-                // xhr.setRequestHeader('X-CSRF-Token',csrfToken);
-               //},  // Add this line
+                 contentType: 'application/json',
+               data: JSON.stringify({json}), //{json: JSON.stringify(info)},
+               url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
                success : function(data) {
-                 console.log(data);// will alert "ok"
+                 console.log(data);
 
                },
                error : function() {
-                 //alert("false");
+                    console.log("error")
                }
              });
 
@@ -135,11 +120,12 @@ else
    );
             $.ajax({
                 type: "GET",
-                url: 'app/endpoints/tracking.php',
+                dataType: 'json',
+                url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
                 success: function (result) {
                     var $dropdown = $("#domainId");
                     $.each(result, function () {
-                        $dropdown.append($("<option />").val(this.domainId).text(this.domainId));
+                        $dropdown.append($("<option />").val(this.domainId).text(this.domain_name));
                     });
                 }
             });
