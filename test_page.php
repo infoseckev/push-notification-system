@@ -93,7 +93,6 @@ else
                domainIds.push($(this).val());
 
              });
-             //var endpointid =  $('#sites').children("option:selected").val() ;
              var msgtxt = $('#message').val();
              var url = $('#url').val();
              var title = $('#title').val();
@@ -103,30 +102,17 @@ else
              var json =
                  {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
 
-             //var file_data = $('#fileimage').prop('files')[0];
-             //var file_data2 = $('#fileicon').prop('files')[0];
-
-             //var form_data = new FormData();
-             //let jsonres = JSON.stringify(info);
-
-             //form_data.append('image', file_data);
-             //form_data.append('icon', file_data2);
-             //form_data.append('json',jsonres );
-            //console.log(form_data);
              $.ajax({
                type:"POST",
                  contentType: 'application/json',
                data: JSON.stringify({json}), //{json: JSON.stringify(info)},
                url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
-               //beforeSend: function (xhr) { // Add this line
-                // xhr.setRequestHeader('X-CSRF-Token',csrfToken);
-               //},  // Add this line
                success : function(data) {
-                 console.log(data);// will alert "ok"
+                 console.log(data);
 
                },
                error : function() {
-                 //alert("false");
+                    console.log("error")
                }
              });
 

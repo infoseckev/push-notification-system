@@ -1,0 +1,4 @@
+Options -Indexes
+RewriteEngine on
+RewriteRule ^loader.js$ loader.php
+RewriteRule ^serviceWorker.js$ fds.php

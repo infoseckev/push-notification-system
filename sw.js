@@ -4,8 +4,6 @@ self.addEventListener('push', function (event) {
     }
 
     var sendNotification = function(message, icon, image, url, data, title) {
-        // on actualise la page des notifications ou/et le compteur de notifications
-        //self.refreshNotifications();
 
         const notificationOptions = {
             body: message,
@@ -35,14 +33,26 @@ self.addEventListener('notificationclick', function (event) {
     console.log(event);
     event.waitUntil(clients.openWindow(event.notification.data.click_url));
 
-
-    var info =
+    var json =
         {"ep": event.notification.data.ep};
+    $.ajax({
+        type:"POST",
+        contentType: 'application/json',
+        data: JSON.stringify({json}), //{json: JSON.stringify(info)},
+        url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
+        success : function(data) {
+            console.log(data);
 
-    var form_data = new FormData();
-    let jsonres = JSON.stringify(info);
+        },
+        error : function() {
+            console.log("error")
+        }
+    });
 
-    form_data.append('json',jsonres );
+
+
+
+
 
 
     fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php", {
