@@ -75,62 +75,56 @@ else
             }
 
 
-  const sendPushButton = document.querySelector('#send-push-button');
+            const sendPushButton = document.querySelector('#send-push-button');
 
-   sendPushButton.addEventListener('click', () =>
-       navigator.serviceWorker.ready
-           .then(serviceWorkerRegistration => serviceWorkerRegistration.pushManager.getSubscription())
-           .then(subscription => {
-             if (!subscription) {
-               alert('Please enable push notifications');
-               //return;
-             }
+            sendPushButton.addEventListener('click', function () {
+                var domainIds = [];
 
-             var domainIds = [];
+                $.each($("#domainId option:selected"), function(){
 
-             $.each($("#domainId option:selected"), function(){
+                    domainIds.push($(this).val());
 
-               domainIds.push($(this).val());
+                });
+                var msgtxt = $('#message').val();
+                var url = $('#url').val();
+                var title = $('#title').val();
+                var imageName = $('#image').val();// $('#fileimage').val();
+                var iconName = $('#icon').val();//$('#fileicon').val();
 
-             });
-             var msgtxt = $('#message').val();
-             var url = $('#url').val();
-             var title = $('#title').val();
-             var imageName = $('#image').val();// $('#fileimage').val();
-             var iconName = $('#icon').val();//$('#fileicon').val();
+                var json =
+                    {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
 
-             var json =
-                 {"msg": msgtxt,  "domainIds" : domainIds, "title" : title, "icon" : iconName, "image" : imageName, "url" : url};
+                $.ajax({
+                    type:"POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify({json}), //{json: JSON.stringify(info)},
+                    url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
+                    success : function(data) {
+                        console.log(data);
 
-             $.ajax({
-               type:"POST",
-                 contentType: 'application/json',
-               data: JSON.stringify({json}), //{json: JSON.stringify(info)},
-               url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
-               success : function(data) {
-                 console.log(data);
-
-               },
-               error : function() {
-                    console.log("error")
-               }
-             });
-
-           })
-   );
-            $.ajax({
-                type: "GET",
-                dataType: 'json',
-                url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
-                success: function (result) {
-                    var $dropdown = $("#domainId");
-                    $.each(result, function () {
-                        $dropdown.append($("<option />").val(this.domainId).text(this.domain_name));
-                    });
-                }
+                    },
+                    error : function() {
+                        console.log("error")
+                    }
             });
 
+
+        })
+        ;
+        $.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
+            success: function (result) {
+                var $dropdown = $("#domainId");
+                $.each(result, function () {
+                    $dropdown.append($("<option />").val(this.domainId).text(this.domain_name));
+                });
+            }
         });
+
+        })
+        ;
     </script>
 
     <style>
@@ -170,13 +164,15 @@ echo '<input id="ip" type="hidden" value="' . $ipaddress . '">';
         <div class="field">
             <label class="label">Icon URL</label>
             <div class="control">
-                <input id="icon" type="text" value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
+                <input id="icon" type="text"
+                       value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
             </div>
         </div>
         <div class="field">
             <label class="label">Image URL</label>
             <div class="control">
-                <input id="image" type="text" value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
+                <input id="image" type="text"
+                       value="https://www.google.ca/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"/>
             </div>
         </div>
         <div class="field">
