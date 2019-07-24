@@ -20,9 +20,11 @@ class SendNotification
     public static function sendNotification($endpoint, $publicKey, $authToken, $message, $title, $icon, $image, $url) {
         $dbhost = "localhost";
         $dbuser = "root";
-        $dbpass = "password";
+        $dbpass = "";
         $dbpass = 'Kj$gX%2f2019_2020';
         $dbname = "moon";
+
+        $sent_id = sha1(time());
 
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
@@ -70,7 +72,7 @@ class SendNotification
 
             if ($report->isSuccess()) {
 
-                $res = $db->query('INSERT INTO sent_logs (endpointId, is_received) values (?, 1) ', $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_received) values (?, ?, 1) ',$sent_id,  $endpoint);
 
                 $db->close();
 
@@ -79,7 +81,7 @@ class SendNotification
                 //return $this->response;
 
             } else {
-                $res = $db->query('INSERT INTO sent_logs (endpointId, is_received) values (?, 0) ', $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_received) values (?, ?, 0) ', $sent_id, $endpoint);
 
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
                 echo "oh NO :(";
