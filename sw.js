@@ -4,6 +4,8 @@ self.addEventListener('push', function (event) {
     }
 
     var sendNotification = function(message, icon, image, url, data, title) {
+        // on actualise la page des notifications ou/et le compteur de notifications
+        //self.refreshNotifications();
 
         const notificationOptions = {
             body: message,
@@ -24,6 +26,26 @@ self.addEventListener('push', function (event) {
         event.waitUntil(
             sendNotification(data.body, data.icon, data.image, data.url, data.data, data.title)
         );
+
+        var info =
+            {"ep": event.notification.data.ep};
+
+        var form_data = new FormData();
+        let jsonres = JSON.stringify(info);
+
+        form_data.append('json',jsonres );
+
+        fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking2.php", {
+            method: 'post',
+            body: form_data
+        })
+            .then(function (data) {
+                console.log('Request succeeded with JSON response', data);
+            })
+            .catch(function (error) {
+                console.log('Request failed', error);
+            });
+
     }
 });
 
@@ -33,27 +55,14 @@ self.addEventListener('notificationclick', function (event) {
     console.log(event);
     event.waitUntil(clients.openWindow(event.notification.data.click_url));
 
-    var json =
+
+    var info =
         {"ep": event.notification.data.ep};
-    $.ajax({
-        type:"POST",
-        contentType: 'application/json',
-        data: JSON.stringify({json}), //{json: JSON.stringify(info)},
-        url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
-        success : function(data) {
-            console.log(data);
 
-        },
-        error : function() {
-            console.log("error")
-        }
-    });
+    var form_data = new FormData();
+    let jsonres = JSON.stringify(info);
 
-
-
-
-
-
+    form_data.append('json',jsonres );
 
     fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php", {
         method: 'post',

@@ -72,7 +72,7 @@ class SendNotification
 
             if ($report->isSuccess()) {
 
-                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_received) values (?, ?, 1) ',$sent_id,  $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent) values (?, ?, 1) ',$sent_id,  $endpoint);
 
                 $db->close();
 
@@ -81,7 +81,7 @@ class SendNotification
                 //return $this->response;
 
             } else {
-                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_received) values (?, ?, 0) ', $sent_id, $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent) values (?, ?, 0) ', $sent_id, $endpoint);
 
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
                 echo "oh NO :(";
