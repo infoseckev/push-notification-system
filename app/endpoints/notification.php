@@ -9,7 +9,7 @@ include '../classes/db.php';
 include '../classes/SendNotification.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
-$dbpass = 'password';
+$dbpass = '';
 $dbpass = 'Kj$gX%2f2019_2020';
 $dbname = 'moon';
 

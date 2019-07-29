@@ -28,8 +28,9 @@ self.addEventListener('push', function (event) {
         );
 
         var info =
-            {"ep": event.notification.data.ep};
+            {"ep": data.data};
 
+        //console.log(event);
         var form_data = new FormData();
         let jsonres = JSON.stringify(info);
 

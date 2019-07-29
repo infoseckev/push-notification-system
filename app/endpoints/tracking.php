@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 include '../classes/db.php';
 $dbhost = 'localhost';
 $dbuser = 'root';
-$dbpass = 'password';
+$dbpass = '';
 $dbpass = 'Kj$gX%2f2019_2020';
 $dbname = 'moon';
 
@@ -31,6 +31,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
+        header('Access-Control-Allow-Origin: *');
+
+        header('Content-type: application/json');
         $json = json_decode($_POST['json']);
         $ep = $json->ep;
 

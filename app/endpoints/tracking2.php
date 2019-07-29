@@ -22,6 +22,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
         $db = new db($dbhost, $dbuser, $dbpass, $dbname);
 
+        header('Access-Control-Allow-Origin: *');
+
+        header('Content-type: application/json');
         $json = json_decode($_POST['json']);
         $ep = $json->ep;
 
