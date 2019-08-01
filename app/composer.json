@@ -1,5 +1,6 @@
 {
     "require": {
-        "minishlink/web-push": "^5.2"
+        "minishlink/web-push": "^5.2",
+        "johnathanmiller/secure-env-php": "^2.0"
     }
 }

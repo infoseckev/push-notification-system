@@ -1,18 +1,15 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+use SecureEnvPHP\SecureEnvPHP;
+(new SecureEnvPHP())->parse('../../.env.enc', '../.env.key');
 
 include '../classes/db.php';
-$dbhost = 'localhost';
-$dbuser = 'root';
-$dbpass = '';
-$dbpass = 'Kj$gX%2f2019_2020';
-$dbname = 'moon';
 
-//$params = json_decode($_POST['json']);
+$dbhost = getenv('DB_HOST');
+$dbuser = getenv('DB_USER');
+$dbpass = getenv('DB_PASS');
+//$password = 'Kj$gX%2f2019_2020';
+$dbname = getenv('DB_NAME');
 
 
 switch ($_SERVER['REQUEST_METHOD']) {

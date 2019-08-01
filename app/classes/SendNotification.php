@@ -17,16 +17,7 @@ class SendNotification
         $this->$authToken = $authToken;*/
     }
 
-    public static function sendNotification($endpoint, $publicKey, $authToken, $message, $title, $icon, $image, $url) {
-        $dbhost = "localhost";
-        $dbuser = "root";
-        $dbpass = "";
-        $dbpass = 'Kj$gX%2f2019_2020';
-        $dbname = "moon";
-
-        $sent_id = sha1(time());
-
-        $db = new db($dbhost, $dbuser, $dbpass, $dbname);
+    public static function sendNotification($endpoint, $publicKey, $authToken, $message, $title, $icon, $image, $url, $sent_id, $domain_id,  $db) {
 
         $info = [
             'subscription' => Subscription::create([
@@ -44,7 +35,7 @@ class SendNotification
         $auth = array(
             'VAPID' => array(
                 'subject' => 'Nooooo',
-                'publicKey' => file_get_contents(__DIR__ . '/../keys/public_key.txt'), // don't forget that your public key also lives in app.js
+                'publicKey' => file_get_contents(__DIR__ . '/../keys/public_key.php'), // don't forget that your public key also lives in app.js
                 'privateKey' => file_get_contents(__DIR__ . '/../keys/prisvate_keyxx11a.php'), // in the real world, this would be in a secret file
             ),
         );
@@ -70,9 +61,11 @@ class SendNotification
         foreach ($webPush->flush() as $report) {
             //$endpointz = $report->getRequest()->getUri()->__toString();
 
+            $res = $db->query('DELETE FROM notifications_queue WHERE `endpointId` = ?  AND `sent_id` = ? AND `domain_id` = ?', $endpoint,  $sent_id, $domain_id);
+
             if ($report->isSuccess()) {
 
-                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent) values (?, ?, 1) ',$sent_id,  $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent, domain_id) values (?, ?, 1,?) ',$sent_id,  $endpoint, $domain_id);
 
                 $db->close();
 
@@ -81,7 +74,7 @@ class SendNotification
                 //return $this->response;
 
             } else {
-                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent) values (?, ?, 0) ', $sent_id, $endpoint);
+                $res = $db->query('INSERT INTO sent_logs (sent_id, endpointId, is_sent,domain_id) values (?, ?, 0,?) ', $sent_id, $endpoint,$domain_id);
 
                 //$this->response->body(json_encode("Message failed to sent for subscription {$endpoint}: {$report->getReason()}", JSON_UNESCAPED_SLASHES));
                 echo "oh NO :(";

@@ -33,13 +33,12 @@ var subscriptionHandler = (function () {
                 //changePushButtonState('incompatible');
                 return;
             }
-
             navigator.serviceWorker.register('/serviceWorker.js').then(
                 () => {
                     console.log('[SW] Service worker has been registered');
                     this.push_updateSubscription();
                 },
-                e => {
+                e => {indexedDB
                     console.error('[SW] Service worker registration failed', e);
                     //changePushButtonState('incompatible');
                 }
@@ -73,9 +72,9 @@ var subscriptionHandler = (function () {
                 'browsername': e.browser.name, 'browserversion': e.browser.version,
                 'useragent': navigator.userAgent, 'appversion': navigator.appVersion,
                 'platform': navigator.platform, 'vendor': navigator.vendor
-            };
-
-            return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
+            };//TODO
+            return fetch('http://localhost/fluffy-octo-couscous/app/endpoints/subscription.php', {
+            //return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
                 method,
                 body: JSON.stringify({
                     endpoint: subscription.endpoint,

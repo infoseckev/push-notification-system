@@ -1,30 +1,32 @@
 <?php
-ini_set('display_errors', 1);
+require __DIR__ . '/../vendor/autoload.php';
+use SecureEnvPHP\SecureEnvPHP;
+(new SecureEnvPHP())->parse('../../.env.enc', '../.env.key');
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, PUT, GET, OPTIONS');
-//header('Content-type: application/json');
 
+////////////////////////////////////////////////////
 $subscription = json_decode(file_get_contents('php://input'), true);
 $browser = $subscription['browser'];
 if (!isset($subscription['endpoint'])) {
     //echo 'Error: not a subscription';
     return;
 }
-
+///////////////////////////////////////////////////
 $method = $_SERVER['REQUEST_METHOD'];
-
 switch ($method) {
     case 'POST':
 
 
-        $servername = "localhost";
-        $username = "root";
-        $password = '';
-        $password = 'Kj$gX%2f2019_2020';
-        $dbname = "moon";
+        $servername = getenv('DB_HOST');
+        $username = getenv('DB_USER');
+        $password = getenv('DB_PASS');
+        //TODO
+        //$password = 'Kj$gX%2f2019_2020';
+        $dbname = getenv('DB_NAME');
 
         $conn = new mysqli($servername, $username, $password, $dbname);
 

@@ -21,3 +21,4 @@ Desktop.ini
 !/.travis.yml
 !.env
 !.env.enc
+!/app/.env.key
