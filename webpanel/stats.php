@@ -18,6 +18,9 @@ $tblCustomer->displayAs("is_sent", "Is Sent?");
 $tblCustomer->displayAs("is_received", "Is Received?");
 $tblCustomer->displayAs("is_clicked", "Is Clicked?");
 $tblCustomer->omitField("endpointId");
+
+$tblCustomer->defineRelationship("domain_id", "domains", "id", "domain_name");
+
 $tblCustomer->disallowAdd();
 $tblCustomer->turnOffAjaxEditing();
 $tblCustomer->disallowDelete();

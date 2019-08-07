@@ -15,7 +15,7 @@ $tblCustomer = new ajaxCRUD("Domains",
     "domains", "id");
 
 # don't show the primary key in the table
-$tblCustomer->omitPrimaryKey();
+
 
 ?>
     <!DOCTYPE html>

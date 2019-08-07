@@ -24,6 +24,10 @@ $tblCustomer->addAjaxFilterBox('sent_id', 100);
 $tblCustomer->omitPrimaryKey();
 $tblCustomer->addButton("Delete All Checked", "#", 'id=deleteAll');
 $tblCustomer->addButton("Select All", "#", "id=selectAll");
+
+$tblCustomer->defineRelationship("domain_id", "domains", "id", "domain_name");
+
+
 $tblCustomer->showCheckbox = true;
 ?>
 
