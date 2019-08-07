@@ -19,6 +19,8 @@ if (!isset($_SESSION['loggedin'])) {
 <body class="loggedin">
 <nav class="navtop">
     <div>
+        <a href="domains.php"><i class="fas fa-industry"></i>Domains</a>
+        <a href="queue.php"><i class="fas fa-water"></i>Queue</a>
         <a href="notifications.php"><i class="far fa-comment-alt"></i>Send Notifications</a>
         <a href="stats.php"><i class="fas fa-poll"></i>Stats</a>
         <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>

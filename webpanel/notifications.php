@@ -14,13 +14,12 @@ if (!isset($_SESSION['loggedin'])) {
     <title>Home Page</title>
     <link href="style.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <link href="style.css" rel="stylesheet" type="text/css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Notification</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://blackops.f5ads.com/Notifications2019/app/lib/subscriptionHandler.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -107,10 +106,11 @@ if (!isset($_SESSION['loggedin'])) {
                     type:"POST",
                     contentType: 'application/json',
                     data: JSON.stringify({json}), //{json: JSON.stringify(info)},
-                    url:"http://localhost/fluffy-octo-couscous/app/endpoints/queue.php",
-                    //url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/notification.php",
+                    //url:"http://localhost/fluffy-octo-couscous/app/endpoints/queue.php",
+                    url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/queue.php",
                     success : function(data) {
                         console.log(data);
+                        alert("notifications added to queue, will be sent within 5 minutes!")
 
                     },
                     error : function() {
@@ -124,8 +124,8 @@ if (!isset($_SESSION['loggedin'])) {
             $.ajax({
                 type: "GET",
                 dataType: 'json',
-                url:"http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php",
-                //url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
+                //url:"http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php",
+                url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
                 success: function (result) {
                     var $dropdown = $("#domainId");
                     $.each(result, function () {
@@ -147,7 +147,10 @@ if (!isset($_SESSION['loggedin'])) {
 <body class="loggedin">
 <nav class="navtop">
     <div>
-        <a href="stats.php"><i class="fas fa-user-circle"></i>Stats</a>
+        <a href="domains.php"><i class="fas fa-industry"></i>Domains</a>
+        <a href="queue.php"><i class="fas fa-water"></i>Queue</a>
+        <a href="notifications.php"><i class="far fa-comment-alt"></i>Send Notifications</a>
+        <a href="stats.php"><i class="fas fa-poll"></i>Stats</a>
         <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
         <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
     </div>
@@ -243,7 +246,7 @@ if (!isset($_SESSION['loggedin'])) {
                     <button id="send-push-button" class="button is-link">Send Notifications</button>
                 </div>
                 <div class="control">
-                    <button id="push-subscription-button" class="button is-text">Add me to push notifications</button>
+                    <button id="push-subscription-button" class="button is-text"></button>
                 </div>
             </div>
 

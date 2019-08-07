@@ -1,7 +1,7 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 use SecureEnvPHP\SecureEnvPHP;
-(new SecureEnvPHP())->parse('../../.env.enc', '../.env.key');
+(new SecureEnvPHP())->parse('../../.env.enc', '../keys/.env.key');
 
 include '../classes/db.php';
 include '../classes/SendNotification.php';
@@ -9,8 +9,7 @@ include '../classes/SendNotification.php';
 $dbhost = getenv('DB_HOST');
 $dbuser = getenv('DB_USER');
 $dbpass = getenv('DB_PASS');
-//TODO
-//$password = 'Kj$gX%2f2019_2020';
+
 $dbname = getenv('DB_NAME');
 
 //$params = json_decode($_POST['json']);

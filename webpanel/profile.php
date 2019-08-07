@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../app/vendor/autoload.php';
 use SecureEnvPHP\SecureEnvPHP;
-(new SecureEnvPHP())->parse('../.env.enc', '../app/.env.key');
+(new SecureEnvPHP())->parse('../.env.enc', '../app/keys/.env.key');
 
 $DATABASE_HOST = getenv('DB_HOST');
 $DATABASE_USER = getenv('DB_USER');

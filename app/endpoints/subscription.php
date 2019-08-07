@@ -1,10 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require __DIR__ . '/../vendor/autoload.php';
 use SecureEnvPHP\SecureEnvPHP;
-(new SecureEnvPHP())->parse('../../.env.enc', '../.env.key');
-/*ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+(new SecureEnvPHP())->parse('../../.env.enc', '../keys/.env.key');
+
 
 header('Access-Control-Allow-Origin: *');
 
@@ -24,8 +25,6 @@ switch ($method) {
         $servername = getenv('DB_HOST');
         $username = getenv('DB_USER');
         $password = getenv('DB_PASS');
-        //TODO
-        //$password = 'Kj$gX%2f2019_2020';
         $dbname = getenv('DB_NAME');
 
         $conn = new mysqli($servername, $username, $password, $dbname);
@@ -106,14 +105,12 @@ switch ($method) {
             $domainId = $row['LAST_INSERT_ID()'];
             break;
         }
-echo $domainId . "    ";
-        echo $userId . "    ";
-        echo "browser : " . $browser['site'];
+
         /////////////////////////////
         ///
        $stmt = $conn->prepare("INSERT INTO user_info_domainId (`user_info_id`, `domainId`, `domain_name`) VALUES (?, ?, ?)");
 
-        $stmt->bind_param("sss",$var1, $var2, $var3);
+        $stmt->bind_param("iis",$var1, $var2, $var3);
         $var1 = $userId;
         $var2 = $domainId;
         $var3 = $domain_name;
