@@ -37,8 +37,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
         header('Content-type: application/json');
         $json = json_decode($_POST['json']);
         $ep = $json->ep;
+        $sent_id = $json->sent_id;
+        echo "sentid: " . $sent_id;
 
-        $res = $db->query('UPDATE sent_logs SET  `is_clicked` = 1 WHERE `endpointId` = ? AND `id` > 0', $ep);
+        $res = $db->query('UPDATE sent_logs SET  `is_clicked` = 1, date_clicked = NOW() WHERE `endpointId` = ? AND `sent_id` = ? AND `id` > 0', $ep, $sent_id);
 
         break;
     case 'PUT':

@@ -73,8 +73,8 @@ var subscriptionHandler = (function () {
                 'useragent': navigator.userAgent, 'appversion': navigator.appVersion,
                 'platform': navigator.platform, 'vendor': navigator.vendor
             };//TODO
-            return fetch('http://localhost/fluffy-octo-couscous/app/endpoints/subscription.php', {
-            //return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
+            //return fetch('http://localhost/fluffy-octo-couscous/app/endpoints/subscription.php', {
+            return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
                 method,
                 body: JSON.stringify({
                     endpoint: subscription.endpoint,

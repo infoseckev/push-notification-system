@@ -106,8 +106,8 @@ if (!isset($_SESSION['loggedin'])) {
                     type:"POST",
                     contentType: 'application/json',
                     data: JSON.stringify({json}), //{json: JSON.stringify(info)},
-                    //url:"http://localhost/fluffy-octo-couscous/app/endpoints/queue.php",
-                    url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/queue.php",
+                    url:"http://localhost/fluffy-octo-couscous/app/endpoints/queue.php",
+                    //url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/queue.php",
                     success : function(data) {
                         console.log(data);
                         alert("notifications added to queue, will be sent within 5 minutes!")
@@ -124,8 +124,8 @@ if (!isset($_SESSION['loggedin'])) {
             $.ajax({
                 type: "GET",
                 dataType: 'json',
-                //url:"http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php",
-                url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
+                url:"http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php",
+                //url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
                 success: function (result) {
                     var $dropdown = $("#domainId");
                     $.each(result, function () {
@@ -195,13 +195,13 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="field">
                 <label class="label">URL</label>
                 <div class="control">
-                    <input id="url" type="text"/>
+                    <input id="url" type="text" value="http://www.google.ca"/>
                 </div>
             </div>
             <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
-                    <input id="title" type="text"/>
+                    <input id="title" type="text" value="Hello World"/>
                 </div>
             </div>
 
@@ -238,7 +238,7 @@ if (!isset($_SESSION['loggedin'])) {
             <div class="field">
                 <label class="label">Message</label>
                 <div class="control">
-                    <textarea class="textarea" id="message" cols="50" rows="10"></textarea>
+                    <textarea class="textarea" id="message" cols="50" rows="10">This is a message from Jesus</textarea>
                 </div>
             </div>
             <div class="field is-grouped">

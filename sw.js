@@ -28,15 +28,15 @@ self.addEventListener('push', function (event) {
         );
 
         var info =
-            {"ep": data.data};
-
+            {"ep": data.data['data'],
+                "sent_id" : data.data['sent_id']};
         //console.log(event);
         var form_data = new FormData();
         let jsonres = JSON.stringify(info);
 
         form_data.append('json',jsonres );
 
-        fetch("http://localhost/fluffy-octo-couscous/app/endpoints/tracking2.php", {
+        fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking2.php", {
             method: 'post',
             body: form_data
         })
@@ -58,14 +58,15 @@ self.addEventListener('notificationclick', function (event) {
 
 
     var info =
-        {"ep": event.notification.data.ep};
+        {"ep": event.notification.data.ep['data'],
+            "sent_id": event.notification.data.ep['sent_id']};
 
     var form_data = new FormData();
     let jsonres = JSON.stringify(info);
 
     form_data.append('json',jsonres );
 
-    fetch("http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php", {
+    fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php", {
         method: 'post',
         body: form_data
     })
@@ -77,4 +78,5 @@ self.addEventListener('notificationclick', function (event) {
         });
 
 });
+
 

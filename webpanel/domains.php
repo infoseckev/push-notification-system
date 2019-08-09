@@ -14,6 +14,9 @@ include ('ajaxCRUD.class.php');
 $tblCustomer = new ajaxCRUD("Domains",
     "domains", "id");
 
+//remove these from live db not used anymore
+$tblCustomer->omitField("tracking");
+$tblCustomer->omitField("client_id");
 # don't show the primary key in the table
 
 
