@@ -47,13 +47,14 @@ switch ($method) {
                                 `endpoint`,
                                 `contentEncoding`,
                                 `publicKey`,
-                                `authToken`)
-                                VALUES (?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?)");
+                                `authToken`,
+                                `gps`)
+                                VALUES (?,?,?,?,?,?,?,?,?,?, ?, ?,?, ?, ?)");
         if ($stmt === false) {
             echo $conn->error;
         } else {
-            $stmt->bind_param("ssssssssssssss",$useragent,$site, $ip, $osname, $osversion, $browsername, $browserversion,
-                $appversion, $platform, $vendor, $endpoint, $contentEncoding, $publicKey, $authToken);
+            $stmt->bind_param("sssssssssssssss",$useragent,$site, $ip, $osname, $osversion, $browsername, $browserversion,
+                $appversion, $platform, $vendor, $endpoint, $contentEncoding, $publicKey, $authToken, $gps);
 
             $useragent = $browser['useragent'];
             $site = $browser['site'];
@@ -70,7 +71,7 @@ switch ($method) {
             //$expirationTime = $subscription['endpoint'];
             $publicKey = $subscription['publicKey']; //$browser['p256dh'];
             $authToken = $subscription['authToken']; //$browser['auth'];
-
+            $gps = $browser['gps'];
             $stmt->execute();
         }
 

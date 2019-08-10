@@ -38,7 +38,7 @@ var subscriptionHandler = (function () {
                     console.log('[SW] Service worker has been registered');
                     this.push_updateSubscription();
                 },
-                e => {indexedDB
+                e => {
                     console.error('[SW] Service worker registration failed', e);
                     //changePushButtonState('incompatible');
                 }
@@ -68,13 +68,13 @@ var subscriptionHandler = (function () {
             var ipaddr = ip;
 
             var browserInfo = {
-                'ip': ipaddr, 'site': window.location.toString(), 'osname': e.os.name, 'osversion': e.os.version,
+                'ip': ipaddr, 'site': /:\/\/([^\/]+)/.exec(window.location.href)[1], 'osname': e.os.name, 'osversion': e.os.version,
                 'browsername': e.browser.name, 'browserversion': e.browser.version,
                 'useragent': navigator.userAgent, 'appversion': navigator.appVersion,
-                'platform': navigator.platform, 'vendor': navigator.vendor
+                'platform': navigator.platform, 'vendor': navigator.vendor,'gps' : gps
             };//TODO
             //return fetch('http://localhost/fluffy-octo-couscous/app/endpoints/subscription.php', {
-            return fetch('https://blackops.f5ads.com/Notifications2019/app/endpoints/subscription.php', {
+            return fetch('https://pusher.f5ads.com/app/endpoints/subscription.php', {
                 method,
                 body: JSON.stringify({
                     endpoint: subscription.endpoint,
