@@ -25,7 +25,7 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 } else {
     $ip = $_SERVER['REMOTE_ADDR'];
 }
-$domain_url = $_SERVER['HTTP_HOST'];
+$domain_url = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST);
 $dbhost = getenv('DB_HOST');
 $dbuser = getenv('DB_USER');
 $dbpass = getenv('DB_PASS');
