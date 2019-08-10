@@ -21,12 +21,13 @@ if (!isset($_SESSION['loggedin'])) {
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://blackops.f5ads.com/Notifications2019/app/lib/subscriptionHandler.js"></script>
+    <script src="https://pusher.f5ads.com/app/lib/subscriptionHandler.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.css"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.js"></script>
     <script src="../lib/push.js"></script>
     <script src="../lib/detector.js"></script>
+    <script src="../endpoints.js"></script>
     <script>
         $(document).ready(function () {
 
@@ -106,8 +107,7 @@ if (!isset($_SESSION['loggedin'])) {
                     type:"POST",
                     contentType: 'application/json',
                     data: JSON.stringify({json}), //{json: JSON.stringify(info)},
-                    url:"http://localhost/fluffy-octo-couscous/app/endpoints/queue.php",
-                    //url:"https://blackops.f5ads.com/Notifications2019/app/endpoints/queue.php",
+                    url:queueURL,
                     success : function(data) {
                         console.log(data);
                         alert("notifications added to queue, will be sent within 5 minutes!")
@@ -124,8 +124,7 @@ if (!isset($_SESSION['loggedin'])) {
             $.ajax({
                 type: "GET",
                 dataType: 'json',
-                url:"http://localhost/fluffy-octo-couscous/app/endpoints/tracking.php",
-                //url: 'https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php',
+                url:trackingURL,
                 success: function (result) {
                     var $dropdown = $("#domainId");
                     $.each(result, function () {
