@@ -25,8 +25,6 @@ if (!isset($_SESSION['loggedin'])) {
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.css"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/jquery-clockpicker.js"></script>
-    <script src="../lib/push.js"></script>
-    <script src="../lib/detector.js"></script>
     <script src="../endpoints.js"></script>
     <script>
         $(document).ready(function () {
