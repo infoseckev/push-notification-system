@@ -36,7 +36,7 @@ self.addEventListener('push', function (event) {
 
         form_data.append('json',jsonres );
 
-        fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking2.php", {
+        fetch("https://pusher.f5ads.com/app/endpoints/tracking2.php", {
             method: 'post',
             body: form_data
         })
@@ -66,7 +66,7 @@ self.addEventListener('notificationclick', function (event) {
 
     form_data.append('json',jsonres );
 
-    fetch("https://blackops.f5ads.com/Notifications2019/app/endpoints/tracking.php", {
+    fetch("https://pusher.f5ads.com/app/endpoints/tracking.php", {
         method: 'post',
         body: form_data
     })
