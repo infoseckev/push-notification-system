@@ -68,7 +68,7 @@ $tblCustomer->showCheckbox = true;
             <a href="domains.php"><i class="fas fa-industry"></i>Domains</a>
             <a href="queue.php"><i class="fas fa-water"></i>Queue</a>
             <a href="notifications.php"><i class="far fa-comment-alt"></i>Send Notifications</a>
-            <a href="stats.php"><i class="fas fa-poll"></i>Stats</a>
+            <a href="stats2.php"><i class="fas fa-poll"></i>Stats</a>
             <a href="profile.php"><i class="fas fa-user-circle"></i>Profile</a>
             <a href="logout.php"><i class="fas fa-sign-out-alt"></i>Logout</a>
         </div>
