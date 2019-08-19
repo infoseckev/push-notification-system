@@ -85,7 +85,7 @@ foreach ($results as $res) {
         'payload' => array('body' => $res['message'],
             'icon' => $res['icon_url'],
             'image' => $res['image_url'],
-            'url' => macro_replace_GPS($res['click_url'], $res['gps']),
+            'url' => $res['click_url'],
             'data' => ['data' => $res['endpointId'], 'sent_id' => $res['sent_id']],
             'title' => $res['title']),
         'vapid' => array('VAPID' => array(

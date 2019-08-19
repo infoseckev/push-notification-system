@@ -60,7 +60,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
                     //click_url here is WITH GPS CONCATENATED. theres 2 click_url columns in diff 2 tables :(
                     //change cronjob to get this click_url
-                    $full_click_url = str_replace("##GPS##", $eps['gps'], $click_url);
+                    $full_click_url = str_replace("##gps##", $eps['gps'], $click_url);
 
                     $stmt = $conn->prepare("INSERT INTO  notifications_queue (endpointId, auth_token, public_key, dateToSend,message_id, sent_id,domain_id, click_url) VALUES (?, ?, ?, ?, ?, ?,?, ?)");
                     $stmt->bind_param("ssssisis", $eps['endpoint'], $eps['authToken'], $eps['publicKey'], $date, $msgid, $sent_id, $eps['domainId'], $full_click_url);
