@@ -39,6 +39,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         $sent_id = sha1(time());
 
+        //click_url here is without GPS contatenated
         $stmt = $conn->prepare("INSERT INTO  messages (click_url, title, icon_url, image_url, message) VALUES (?, ?, ?, ?,?)");
         $stmt->bind_param("sssss", $click_url, $title, $icon_url, $image_url, $message);
         $stmt->execute();
@@ -47,18 +48,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
         foreach($domainIds as $domainId){
             //find endpoints for subdomains selected on test_page.php
-            $endpointarr = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info.gps, user_info_domainId.user_info_id, user_info_domainId.domainId
+            $endpointarr = $db->query('SELECT user_info.endpoint, user_info.publicKey, user_info.authToken, user_info.gps, user_info_domainid.user_info_id, user_info_domainid.domainId
                                             FROM user_info
-                                            INNER JOIN user_info_domainId
-                                            ON user_info.id = user_info_domainId.user_info_id 
-                                            WHERE user_info_domainId.domainId = ?', $domainId)->fetchAll();
+                                            INNER JOIN user_info_domainid
+                                            ON user_info.id = user_info_domainid.user_info_id 
+                                            WHERE user_info_domainid.domainId = ?', $domainId)->fetchAll();
 
             foreach($endpointarr as $eps){
 
                 try {
 
-                    $stmt = $conn->prepare("INSERT INTO  notifications_queue (endpointId, auth_token, public_key, dateToSend,message_id, sent_id,domain_id) VALUES (?, ?, ?, ?, ?, ?,?)");
-                    $stmt->bind_param("ssssisi", $eps['endpoint'], $eps['authToken'], $eps['publicKey'], $date, $msgid, $sent_id, $eps['domainId']);
+                    //click_url here is WITH GPS CONCATENATED. theres 2 click_url columns in diff 2 tables :(
+                    //change cronjob to get this click_url
+                    $full_click_url = str_replace("##GPS##", $eps['gps'], $click_url);
+
+                    $stmt = $conn->prepare("INSERT INTO  notifications_queue (endpointId, auth_token, public_key, dateToSend,message_id, sent_id,domain_id, click_url) VALUES (?, ?, ?, ?, ?, ?,?, ?)");
+                    $stmt->bind_param("ssssisis", $eps['endpoint'], $eps['authToken'], $eps['publicKey'], $date, $msgid, $sent_id, $eps['domainId'], $full_click_url);
                     $stmt->execute();
                     $stmt->close();
                 }
